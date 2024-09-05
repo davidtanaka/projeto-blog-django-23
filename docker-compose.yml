@@ -1,5 +1,4 @@
-
-version: '3.9'
+# version: '4.33' # Comentando pois a versão é obsoleta
 
 services:
   djangoapp:
@@ -21,5 +20,6 @@ services:
     image: postgres:13-alpine
     volumes:
       - ./data/postgres/data:/var/lib/postgresql/data/
+      - ./data/web/static:/data/web/static:rw
     env_file:
       - ./dotenv_files/.env
