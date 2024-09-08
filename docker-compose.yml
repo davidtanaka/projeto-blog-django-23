@@ -1,5 +1,4 @@
 # version: '4.33' # Comentando pois a versão é obsoleta
-
 services:
   djangoapp:
     container_name: djangoapp
