@@ -3,7 +3,7 @@
 <head>
   {% include "blog/partials/_head.html" %}
 </head>
-<body>
+<body class="dark-theme"> 
   <h1>EXEMPLO: {{ site_setup.description }}</h1>
 
 
@@ -14,5 +14,7 @@
   {% include "blog/partials/_pagination.html" %}
 
   {% include "blog/partials/_footer.html" %}
+
+  {% include 'blog/partials/_temp.html' %}
 </body>
 </html>
