@@ -11,9 +11,13 @@
 
     {% block content %}{% endblock content %}
     
-    {% include 'blog/partials/_pagination.html' %}
+    {% if site_setup.show_pagination %}
+      {% include 'blog/partials/_pagination.html' %}
+    {% endif %}
     
-    {% include 'blog/partials/_footer.html' %}
+    {% if site_setup.show_pagination %}
+      {% include 'blog/partials/_footer.html' %}
+    {% endif %}
   </div>
 </body>
 </html>
