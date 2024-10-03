@@ -1,5 +1,6 @@
+# blog/views.py
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from blog.models import Post
 
 PER_PAGE = 9
@@ -18,7 +19,6 @@ def index(request):
         }
     )
 
-
 def page(request):
     return render(
         request,
@@ -28,12 +28,12 @@ def page(request):
         }
     )
 
-
-def post(request):
+def post(request, slug):
+    post = get_object_or_404(Post, slug=slug, is_published=True)
     return render(
         request,
         'pages/post.html',
         {
-            # 'page_obj': page_obj,
+            'post': post,
         }
     )

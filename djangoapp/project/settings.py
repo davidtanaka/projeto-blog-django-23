@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
+
+    # Meu apps
+    'blog.apps.BlogConfig',  # Mantém apenas essa linha
     'site_setup',
+
+    # Summernote
     'django_summernote',
 ]
 
@@ -60,19 +64,19 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
-        'APP_DIRS': True,  # Deve estar como True
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'site_setup.context_processors.site_setup'
+                'site_setup.context_processors.context_processor_example',
+                'site_setup.context_processors.site_setup',
             ],
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
@@ -82,16 +86,14 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE', 'change-me'),
+        'NAME': os.getenv('POSTGRES_DB', 'change-me'),
         'USER': os.getenv('POSTGRES_USER', 'change-me'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'change-me'),
         'HOST': os.getenv('POSTGRES_HOST', 'change-me'),
         'PORT': os.getenv('POSTGRES_PORT', 'change-me'),
     }
 }
-
-
 
 
 # Password validation
@@ -141,6 +143,7 @@ MEDIA_ROOT = DATA_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 SUMMERNOTE_CONFIG = {
     'summernote': {

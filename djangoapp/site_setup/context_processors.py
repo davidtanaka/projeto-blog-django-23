@@ -1,7 +1,15 @@
 from site_setup.models import SiteSetup
 
-def site_setup(request):
-    data = SiteSetup.objects.order_by('-id').first()
+
+def context_processor_example(request):
     return {
-        'site_setup': data
+        'example': 'Veio do context processor (example)'
+    }
+
+
+def site_setup(request):
+    setup = SiteSetup.objects.order_by('-id').first()
+
+    return {
+        'site_setup': setup,
     }
