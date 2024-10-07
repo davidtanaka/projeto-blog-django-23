@@ -92,6 +92,7 @@ class PostManager(models.Manager):
         return self.filter(is_published=True).order_by('-pk')
 
 class Post(models.Model):
+    summernote_fields = ('content',)
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
@@ -103,7 +104,7 @@ class Post(models.Model):
         unique=True, default="",
         null=False, blank=True, max_length=255
     )
-    excerpt = models.CharField(max_length=150)
+    excerpt = models.TextField(max_length=500)
     is_published = models.BooleanField(
         default=False,
         help_text=(
@@ -111,7 +112,7 @@ class Post(models.Model):
             'para o post ser exibido publicamente.'
         ),
     )
-    content = models.TextField()
+    content = models.TextField(help_text='O HTML apenas será salvo dentro do campo code view')
     cover = models.ImageField(upload_to='posts/%Y/%m/', blank=True, default='')
     cover_in_post_content = models.BooleanField(
         default=True,
