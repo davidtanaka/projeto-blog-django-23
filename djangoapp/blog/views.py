@@ -1,7 +1,7 @@
 # type:ignore
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post
+from blog.models import Post, Page
 from django.db.models import Q
 PER_PAGE = 9
 
@@ -66,7 +66,7 @@ def search(request):
     posts = (Post.objects.get_published()
         .filter(
             Q(title__icontains=search_value) | 
-            Q(excerpt__icontains=search_value) |
+            Q(excerpt__icontains=search_value) | 
             Q(content__icontains=search_value) 
         )
     )[:PER_PAGE]
@@ -81,12 +81,14 @@ def search(request):
     )
 
 
-def page(request):
+def page(request, slug):
+    page = Page.objects.filter(is_published=True, slug=slug).first()
+    
     return render(
         request,
         'pages/page.html',
         {
-            # 'page_obj': page_obj,
+            'page': page,
         }
     )
 

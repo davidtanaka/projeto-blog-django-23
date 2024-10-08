@@ -1,13 +1,14 @@
-<footer class="footer section-wrapper">
+<footer class="footer section-wrapper mt-base">
   <div class="section-content-wide">
     <div class="section-gap">
       <div class="center">
-        © {% now "Y" %} {{ site_setup.title }} - Todos os direitos reservados.
+        © {% now "Y" %} {{ site_setup.description }} - Todos os direitos reservados.
       </div>
     </div>
   </div>
 </footer>
 
+{% comment %} JavaScript {% endcomment %}
 <script>
   (function () {
     if (typeof CodeMirror == 'undefined') return;
