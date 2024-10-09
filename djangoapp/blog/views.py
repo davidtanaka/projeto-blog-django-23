@@ -1,5 +1,6 @@
 # type:ignore
 from django.core.paginator import Paginator
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Page
 from django.db.models import Q
@@ -16,6 +17,7 @@ def index(request):
         'pages/index.html',
         {
             'page_obj': page_obj,
+            'page_title': 'Home - '
         }
     )
 
@@ -30,20 +32,27 @@ def created_by(request, author_id):
         'pages/index.html',
         {
             'page_obj': page_obj, 
+            'page_title': 'Created_by - ',
         }
     )
 
 def category(request, slug):
     posts = Post.objects.get_published().filter(category__slug=slug) # type:ignore
+    
     paginator = Paginator(posts, PER_PAGE)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
+    if len(page_obj) == 0:
+        raise Http404
+
+    page_title = f'Categoria - {page_obj[0].category.name} - '
     return render(
         request,
         'pages/index.html',
         {
             'page_obj': page_obj, 
+            'page_title': page_title,
         }
     )
 
@@ -53,11 +62,17 @@ def tag(request, slug):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
+    if len(page_obj) == 0:
+        raise Http404
+
+    page_title = f'Tag - {page_obj[0].tags.first().name} - '
+
     return render(
         request,
         'pages/index.html',
         {
             'page_obj': page_obj, 
+            'page_title': page_title,
         }
     )
 
@@ -70,6 +85,8 @@ def search(request):
             Q(content__icontains=search_value) 
         )
     )[:PER_PAGE]
+
+    page_title = f'{search_value[:25]} - Search - '
     
     return render(
         request,
@@ -77,27 +94,41 @@ def search(request):
         {
             'page_obj': posts, 
             'search_value': search_value,
+            'page_title': page_title,
         }
     )
 
 
 def page(request, slug):
-    page = Page.objects.filter(is_published=True, slug=slug).first()
+    page_obj = Page.objects.filter(is_published=True, slug=slug).first()
+    
+    if page_obj is None:
+        raise Http404
+
+    page_title = f'Pagina - {page_obj.title} - '
     
     return render(
         request,
         'pages/page.html',
         {
-            'page': page,
+            'page': page_obj,
+            'page_title': page_title,
         }
     )
 
 def post(request, slug):
-    post = get_object_or_404(Post, slug=slug, is_published=True)
+    post_obj = get_object_or_404(Post, slug=slug, is_published=True)
+
+    if post_obj is None:
+        raise Http404
+
+    page_title = f'Post - {post_obj.title} - '
+
     return render(
         request,
         'pages/post.html',
         {
-            'post': post,
+            'post': post_obj,
+            'page_title': page_title,
         }
     )
