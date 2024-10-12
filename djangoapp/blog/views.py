@@ -85,28 +85,20 @@ class CategoryListView(PostListView):
         
 
 
-
-def tag(request, slug):
-    posts = Post.objects.get_published()\
-        .filter(tags__slug=slug)
-
-    paginator = Paginator(posts, PER_PAGE)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    if len(page_obj) == 0:
-        raise Http404()
-
-    page_title = f'{page_obj[0].tags.first().name} - Tag - '
-
-    return render(
-        request,
-        'pages/index.html',
-        {
-            'page_obj': page_obj,
-            'page_title': page_title,
-        }
-    )
+class TagListView(PostListView):
+    allow_empty=False
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            tags__slug=self.kwargs.get('slug')
+        )
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        page_title = f'Tag - {self.object_list[0].tags.first().name} - '
+        ctx.update({
+            'page_title': page_title
+        })
+        return ctx
 
 
 def search(request):
