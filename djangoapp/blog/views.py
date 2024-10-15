@@ -175,13 +175,13 @@ def page(request, slug):
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/pages/post.html'
+    template_name = 'pages/post.html'
     context_object_name = 'post'
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         post = self.get_object()
-        page_title = f'{post.title} - Post - '  # type: ignore
+        page_title = f'Post - {post.title} - '  # type: ignore
         ctx.update({
             'page_title': page_title,
         })

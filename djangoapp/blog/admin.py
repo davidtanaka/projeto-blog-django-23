@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
 from .models import Category, Page, Post, Tag  # Importar modelos aqui
-from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 @admin.register(Tag)
